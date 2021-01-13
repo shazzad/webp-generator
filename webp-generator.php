@@ -3,7 +3,7 @@
  * Plugin Name: WebP Generator
  * Plugin URI: https://shazzad.me
  * Description: Media image to WebP Generator
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Shazzad Hossain Khan
  * Author URI: https://shazzad.me
  * Requires at least: 5.2

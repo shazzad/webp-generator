@@ -30,7 +30,7 @@ final class Plugin {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.0';
+	public $version = '1.0.1';
 
 	/**
 	 * Singleton The reference the *Singleton* instance of this class.
@@ -80,11 +80,12 @@ final class Plugin {
 	 */
 	private function initialize() {
 		new Rest_Api();
+		new Automation();
 
 		if ( is_admin() ) {
 			new Admin\Main();
 			new Admin\Ajax_Handlers();
-			new Admin\Page\Settings();
+			new Admin\Settings_Page();
 		}
 	}
 

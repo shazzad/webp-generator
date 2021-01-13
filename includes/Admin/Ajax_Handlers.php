@@ -72,7 +72,6 @@ class Ajax_Handlers {
 	public function generate_ajax() {
 		// Debug Delay
 		// sleep(5);
-
 		// wp_send_json_error( array(
 		// 	'message' => __( 'Unable to run generator.' )
 		// ));

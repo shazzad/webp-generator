@@ -89,9 +89,9 @@ class Webp_Generator {
         $media_to_webp = new Media_To_Webp( $id );
         $media_to_webp->generate( $this->force_generation );
 
-        $this->files_generated += $media_to_webp->files_generated;
+        $this->files_generated += $media_to_webp->get_files_generated();
 
-        foreach ( $media_to_webp->logs as $log ) {
+        foreach ( $media_to_webp->get_logs() as $log ) {
             $this->logs[] = $log;
         }
     }

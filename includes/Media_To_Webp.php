@@ -44,16 +44,17 @@ class Media_To_Webp {
         $this->files = [];
 
 		$metadata = wp_get_attachment_metadata( $this->id );
-
-		$mainfile = $metadata['file'];
-        if ( 0 !== strpos( $mainfile, $this->basedir ) ) {
-            $mainfile = $this->basedir . '/' . $mainfile;
-        }
-
-        $this->files[] = $mainfile;
-        foreach ( $metadata['sizes'] as $size ) {
-            $this->files[] = dirname( $mainfile ) . '/' . $size['file'];
-        }
+		if ( ! empty( $metadata ) ) {
+			$mainfile = $metadata['file'];
+			if ( 0 !== strpos( $mainfile, $this->basedir ) ) {
+				$mainfile = $this->basedir . '/' . $mainfile;
+			}
+	
+			$this->files[] = $mainfile;
+			foreach ( $metadata['sizes'] as $size ) {
+				$this->files[] = dirname( $mainfile ) . '/' . $size['file'];
+			}
+		}
 	}
 
 	public function generate_webp_files( $force_generation = false ) {
@@ -74,4 +75,12 @@ class Media_To_Webp {
             }
 		}
     }
+
+	public function get_files_generated() {
+		return $this->files_generated;
+	}
+
+	public function get_logs() {
+		return $this->logs;
+	}
 }

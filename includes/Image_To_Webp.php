@@ -20,7 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Image_To_Webp {
 
-	public $allowe_extensions = [
+	public $source;
+
+	public $source_extension;
+
+	const ALLOWED_EXTS = [
 		'jpg',
 		'jpeg',
 		'gif',
@@ -28,30 +32,29 @@ class Image_To_Webp {
 		'bmp'
 	];
 
-	public $source;
-	public $destination;
-	public $filedir;
-	public $filename;
-	public $extension;
-
+	/**
+	 * Constructor.
+	 * 
+	 * @param string $source Source file absolute path.
+	 */
 	public function __construct( $source ) {
 		if ( ! file_exists( $source ) ) {
 			throw new Exception( __( 'File not exists', 'webpgen' ) );
 		}
 
-		$this->extension = pathinfo( $source, PATHINFO_EXTENSION );
-		if ( ! in_array( $this->extension, $this->allowe_extensions, true ) ) {
-			throw new Exception( __( 'Unknown file extension', 'webpgen' ) );
+		$this->source_extension = pathinfo( $source, PATHINFO_EXTENSION );
+		if ( ! in_array( $this->source_extension, static::ALLOWED_EXTS, true ) ) {
+			throw new Exception( __( 'Unknown file source_extension', 'webpgen' ) );
 		}
 
 		if ( ! webpgen_is_gd_installed() || ! webpgen_is_gd_support_enabled( 'WebP Support' ) ) {
             throw new Exception( __( 'Missing GD Libary / WebP Module. Can not generate webp image.', 'webpgen' ) );
         }
 
+		$filename = pathinfo( $source, PATHINFO_FILENAME );
+
 		$this->source = $source;
-		$this->filedir = dirname( $source );
-		$this->filename = pathinfo( $source, PATHINFO_FILENAME );
-		$this->destination = $this->filedir . '/' . $this->filename . '.webp';
+		$this->destination = dirname( $source ) . '/' . $filename . '.webp';
 	}
 
 	public function webp_exists() {
@@ -59,16 +62,22 @@ class Image_To_Webp {
 	}
 
 	public function generate() {
-		if ($this->extension == 'jpeg' || $this->extension == 'jpg') {
+		if ($this->source_extension == 'jpeg' || $this->source_extension == 'jpg') {
 			$image = imagecreatefromjpeg( $this->source );
-		} elseif ($this->extension == 'gif') {
+		} elseif ($this->source_extension == 'gif') {
 			$image = imagecreatefromgif( $this->source );
-		} elseif ($this->extension == 'png') {
+			imagepalettetotruecolor($image);
+			imagealphablending($image, true);
+			imagesavealpha($image, true);
+		} elseif ($this->source_extension == 'png') {
 			$image = imagecreatefrompng( $this->source );
-		} elseif ($this->extension == 'bmp') {
+			imagepalettetotruecolor($image);
+			imagealphablending($image, true);
+			imagesavealpha($image, true);
+		} elseif ($this->source_extension == 'bmp') {
 			$image = imagecreatefrombmp( $this->source );
 		}
 
-		return \imagewebp( $image, $this->destination, WEBPGEN_QUALITY );
+		return imagewebp( $image, $this->destination, WEBPGEN_QUALITY );
 	}
 }

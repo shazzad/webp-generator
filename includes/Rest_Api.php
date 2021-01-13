@@ -19,16 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Rest_Api {
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
-		add_action( 'updated_postmeta', array( $this, 'updated_postmeta' ), 10, 4 );
-		add_action( 'added_post_meta', array( $this, 'updated_postmeta' ), 10, 4 );
 	}
 
-	public function updated_postmeta( $meta_id, $object_id, $meta_key, $meta_value ) {
-		if ( $meta_key == '_thumbnail_id' && (int) $meta_value > 0  ) {
-			$media_to_webp = new Media_To_Webp( $meta_value );
-			$media_to_webp->generate( false );
-		}
-	}
+	
 	/**
 	 * Schedule a rewrite rules regeneration after listing page updates.
 	 *
@@ -78,16 +71,7 @@ class Rest_Api {
 	}
 
 	public function get_webp_media_details( $object ) {
-		global $wpdb;
-		$sql = "SELECT P.ID FROM $wpdb->posts AS P";
-		$sql .= " INNER JOIN $wpdb->postmeta AS PM ON (PM.post_id = P.ID)";
-		$sql .= " WHERE 1=1";
-		$sql .= " AND P.post_status = 'publish'";
-		$sql .= " AND PM.meta_key = '_thumbnail_id'";
-		$sql .= " AND PM.meta_value = '". $object['id'] ."'";
-		$sql .= " LIMIT 1";
-
-		if ( $wpdb->get_var( $sql ) ) {
+		if ( webpgen_is_media_featured( $object['id'] ) ) {
 			return $this->get_webp_media_details_raw( $object['id'] );
 		}
 
