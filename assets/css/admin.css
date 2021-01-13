@@ -1,0 +1,62 @@
+/* General */
+.wrap h1{
+	margin-bottom: 1rem;
+}
+.webpgen-wrap{
+	max-width: 800px;
+}
+
+.webpgen-widget{
+	padding: 20px;
+	margin: 0 0 20px 0;
+	border: 1px solid #DDD;
+	background-color: #FFF;
+}
+
+.webpgen-widget-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+
+.webpgen-action-wrap{
+	display: flex;
+	align-items: center;
+}
+
+.webpgen-generate-logs {
+    padding: 20px;
+    margin-top: 20px;
+    max-height: 400px;
+    overflow: hidden;
+	overflow-y: auto;
+	line-height: 26px;
+    background-color: #f9f9f9;
+}
+
+.webpgen-error{
+    margin: 5px 0 15px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 15px 2px;
+    padding: 1px 12px;
+}
+.webpgen-ajax-message{
+	margin-left: 10px;
+}
+
+@media (min-width: 961px) {
+	.webpgen-sidebar{
+		padding: 10px 20px;
+		float: right;
+		width: 260px;
+		background-color: #fff;
+	}
+	.webpgen-form{
+		overflow: hidden;
+	}
+}

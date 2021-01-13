@@ -1,0 +1,21 @@
+{
+  "name": "shazzad/webp-generator",
+  "description": "Media image to webp generator.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Shazzad Hossain Khan",
+      "email": "hello@shazzad.me"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "WebpGen\\": "includes/"
+    },
+    "files": [
+      "includes/functions.php"
+    ]
+  }
+}
