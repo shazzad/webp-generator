@@ -1,12 +1,6 @@
 # WebpGen
-Display jobs from your webpgen account on your wordpress website.
+Media image to WebP Generator. At present it generates webp file for images that are assigned as featured image on any post type.
 
 # Requrements
-* WebpGen API Username,
-* WebpGen API Password.
-* WebpGen Agency Key.
-
-# Features
-* Job directory page.
-* Single job page.
-* Jobs sitemap.
+* GD Libary.
+* WebP Support Enabled.
