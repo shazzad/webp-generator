@@ -3,7 +3,7 @@
  * Plugin Name: WebP Generator
  * Plugin URI: https://shazzad.me
  * Description: Media image to WebP Generator
- * Version: 1.0.2
+ * Version: 1.0.6
  * Author: Shazzad Hossain Khan
  * Author URI: https://shazzad.me
  * Requires at least: 5.2
@@ -26,7 +26,7 @@ if ( ! defined( 'WEBPGEN_PLUGIN_FILE' ) ) {
 
 // Define base file.
 if ( ! defined( 'WEBPGEN_QUALITY' ) ) {
-	define( 'WEBPGEN_QUALITY', 90 );
+	define( 'WEBPGEN_QUALITY', 82 );
 }
 
 /**

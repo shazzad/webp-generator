@@ -22,7 +22,6 @@ class Settings_Page {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_filter( 'mime_types', array( $this, 'mime_types' ) );
 	}
 
 	/**
@@ -41,11 +40,6 @@ class Settings_Page {
 		add_action( "admin_print_styles-{$admin_page}", array( $this, 'print_scripts' ) );
 	}
 
-	public function mime_types( $types ) {
-		$types['webp'] = 'image/webp';
-		return $types;
-	}
-
 	/**
 	 * Render Admin Page
 	 */
@@ -56,28 +50,51 @@ class Settings_Page {
 			<div class="webpgen-widget">
 				<div class="webpgen-widget-title"><?php esc_html_e( 'Generate Webp Files For Featured Images', 'webpgen' ); ?></div>
 
-				<?php if ( ! wp_image_editor_supports( array( 'methods' => array( 'save' ) ) ) ) : ?>
+				<?php if ( ! webpgen_is_imagick_available() && ! webpgen_is_gd_available() ) : ?>
 					<div class="webpgen-error"><p><?php _e( 'Your can\'t use this tool because your server doesn\'t support image conversion which means that WordPress can\'t convert new image. Please ask your host to install the Imagick or GD PHP extensions.', 'webpgeb' ); ?></p></div>
+
+				<?php elseif ( ! webpgen_is_imagick_support_webp() && ! webpgen_is_gd_support_webp() ) : ?>
+					<div class="webpgen-error"><p><?php _e( 'None of your Image Editor support webp conversion.', 'webpgeb' ); ?></p></div>
+
 				<?php else : ?>
-				<div class="webpgen-action-wrap">
-					<button class="button button-primary button-large" id="webpgen-start-btn">
-						<?php esc_html_e( 'Generate Now', 'webpgen' ); ?>
-					</button>
-					<span class="webpgen-ajax-message">
-						<?php 
-						printf( 
-							__( '%d Featured Images Approximately.', 'webpgen' ),
-							webpgen_featured_image_count()
-						);
-						?>
-					</span>
-				</div>
+					<div class="webpgen-action-wrap">
+						<button class="button button-primary button-large" id="webpgen-start-btn">
+							<?php esc_html_e( 'Generate Now', 'webpgen' ); ?>
+						</button>
+						<span class="webpgen-ajax-message">
+							<?php 
+							printf( 
+								__( '%d Featured Images Approximately.', 'webpgen' ),
+								webpgen_featured_image_count()
+							);
+							?>
+						</span>
+					</div>
 				<?php endif; ?>
 			</div>
 
 			<div class="webpgen-widget webpgen-widget-logs" style="display:none;">
 				<div class="webpgen-widget-title"><?php esc_html_e( 'Logs', 'webpgen' ); ?></div>
 				<div class="webpgen-generate-logs"></div>
+			</div>
+
+			<div class="webpgen-widget">
+				<div class="webpgen-widget-title"><?php esc_html_e( 'Image Library', 'webpgen' ); ?></div>
+				<?php 
+					// $implementation = _wp_image_editor_choose( array( 'mime_type' => 'image/png' ) );
+					// Utils::p($implementation);
+					// Utils::p(get_class_methods( $implementation ));
+					printf( 
+						'<strong>Imagick</strong> %s, WebP %s<br />', 
+						webpgen_is_imagick_available() ? 'Available' : 'Unavailable',
+						webpgen_is_imagick_support_webp() ? 'Supported' : 'Not Supported'
+					);
+					printf( 
+						'<strong>GD Library</strong> %s, WebP %s<br />', 
+						webpgen_is_gd_available() ? 'Available' : 'Unavailable',
+						webpgen_is_gd_support_webp() ? 'Supported' : 'Not Supported'
+					);
+				?>
 			</div>
 
 			<div class="webpgen-widget">

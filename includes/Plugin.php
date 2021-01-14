@@ -30,7 +30,7 @@ final class Plugin {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.2';
+	public $version = '1.0.6';
 
 	/**
 	 * Singleton The reference the *Singleton* instance of this class.
@@ -62,6 +62,7 @@ final class Plugin {
 		$this->initialize();
 
 		add_action( 'init', array( $this, 'load_plugin_translations' ) );
+		add_filter( 'mime_types', array( $this, 'mime_types' ) );
 	}
 
 	/**
@@ -98,6 +99,14 @@ final class Plugin {
 			false,
 			basename( dirname( WEBPGEN_PLUGIN_FILE ) ) . '/languages'
 		);
+	}
+
+	/**
+	 * Add webp mime type.
+	 */
+	public function mime_types( $types ) {
+		$types['webp'] = 'image/webp';
+		return $types;
 	}
 
 	/**

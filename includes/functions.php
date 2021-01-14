@@ -103,3 +103,42 @@ function webpgen_get_all_image_sizes() {
 
     return $image_sizes;
 }
+
+
+function webpgen_is_imagick_available() {
+	require_once ABSPATH . WPINC . '/class-wp-image-editor.php';
+	require_once ABSPATH . WPINC . '/class-wp-image-editor-imagick.php';
+
+	return WP_Image_Editor_Imagick::test();
+}
+
+function webpgen_is_imagick_support_webp() {
+	if ( ! class_exists( 'Imagick' ) ) {
+		return false;
+	}
+
+	try {
+		return (bool) Imagick::queryformats( 'WEBP' );
+	} catch ( Exception $e ) {
+		return false;
+	}
+}
+
+function webpgen_is_gd_available() {
+	require_once ABSPATH . WPINC . '/class-wp-image-editor.php';
+	require_once ABSPATH . WPINC . '/class-wp-image-editor-gd.php';
+
+	return WP_Image_Editor_GD::test();
+}
+
+function webpgen_is_gd_support_webp() {
+	if ( ! function_exists( 'gd_info' ) ) {
+		return false;
+	}
+
+	$info = gd_info();
+
+	if ( isset( $info['WebP Support'] ) && $info['WebP Support'] ) {
+		return true;
+	}
+}
