@@ -1,4 +1,7 @@
 <?php
+/**
+ * @see https://github.com/shazzad/w4-loggable
+ */
 function webpgen_log( $message, $context = array() ) {
 	do_action(
 		'w4_loggable_log',
@@ -14,15 +17,23 @@ function webpgen_is_media_featured( $media_id ) {
 	if ( false === $result ) {
 		global $wpdb;
 
-		$sql = "SELECT P.ID FROM $wpdb->posts AS P";
-		$sql .= " INNER JOIN $wpdb->postmeta AS PM ON (PM.post_id = P.ID)";
-		$sql .= " WHERE 1=1";
-		$sql .= " AND P.post_status = 'publish'";
-		$sql .= " AND PM.meta_key = '_thumbnail_id'";
-		$sql .= " AND PM.meta_value = '". $media_id ."'";
-		$sql .= " LIMIT 1";
-	
-		if ( $wpdb->get_var( $sql ) ) {
+		$res = $wpdb->get_var( $wpdb->prepare(
+			"
+			SELECT
+				P.ID
+			FROM
+				{$wpdb->posts} AS P
+			INNER JOIN 
+				{$wpdb->postmeta} AS PM ON (PM.post_id = P.ID)
+			WHERE
+				P.post_status = 'publish'
+				AND PM.meta_key = '_thumbnail_id'
+				AND PM.meta_value = %d
+			",
+			$media_id
+		));
+
+		if ( $res ) {
 			$result = 'yes';
 		} else {
 			$result = 'no';
@@ -38,6 +49,35 @@ function webpgen_is_media_featured( $media_id ) {
 	return false;
 }
 
+function webpgen_featured_image_count() {
+	if ( get_transient( 'webpgen_featured_image_count' ) ) {
+		return get_transient( 'webpgen_featured_image_count' );
+	}
+
+	global $wpdb;
+	$image_mimes = array(
+		'image/jpeg',
+		'image/gif',
+		'image/png',
+		'image/bmp',
+	);
+
+	$result = $wpdb->get_var(
+		"
+		SELECT
+			COUNT(DISTINCT meta_value)
+		FROM
+			{$wpdb->postmeta}
+		WHERE
+			meta_key = '_thumbnail_id'
+			AND meta_value <> ''
+		"
+	);
+	set_transient( 'webpgen_featured_image_count', $result, 60 );
+
+	return $result;
+}
+
 function webpgen_is_cron_disabled() {
 	if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
 		return true;
@@ -46,19 +86,20 @@ function webpgen_is_cron_disabled() {
 	return false;
 }
 
-function webpgen_is_gd_installed() {
-	return extension_loaded('gd');
-}
+function webpgen_get_all_image_sizes() {
+    global $_wp_additional_image_sizes;
 
-function webpgen_is_gd_support_enabled( $module ) {
-	if ( ! function_exists( 'gd_info' ) ) {
-		return false;
-	}
+    $default_image_sizes = get_intermediate_image_sizes();
 
-	$info = gd_info();
-	if ( $info[ $module ] && $info[ $module ] === true ) {
-		return true;
-	}
+    foreach ( $default_image_sizes as $size ) {
+        $image_sizes[ $size ][ 'width' ] = intval( get_option( "{$size}_size_w" ) );
+        $image_sizes[ $size ][ 'height' ] = intval( get_option( "{$size}_size_h" ) );
+        $image_sizes[ $size ][ 'crop' ] = get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false;
+    }
 
-	return false;
+    if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+        $image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
+    }
+
+    return $image_sizes;
 }

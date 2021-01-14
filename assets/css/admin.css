@@ -14,11 +14,10 @@
 }
 
 .webpgen-widget-title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #CCC;
-    padding-bottom: 10px;
-    font-weight: 700;
+	font-size: 16px;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCC;
 }
 
 .webpgen-action-wrap{
@@ -27,27 +26,36 @@
 }
 
 .webpgen-generate-logs {
-    padding: 20px;
-    margin-top: 20px;
-    max-height: 400px;
-    overflow: hidden;
+	padding: 20px;
+	margin-top: 20px;
+	max-height: 400px;
+	overflow: hidden;
 	overflow-y: auto;
 	line-height: 26px;
-    background-color: #f9f9f9;
+	background-color: #f9f9f9;
 }
 
 .webpgen-error{
-    margin: 5px 0 15px;
-    background: #fff;
-    border: 1px solid #ccd0d4;
-    border-left: 4px solid #dc3232;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
-    margin: 5px 15px 2px;
-    padding: 1px 12px;
+	margin: 5px 0 15px;
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	border-left: 4px solid #dc3232;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	margin: 5px 0 2px;
+	padding: 1px 12px;
 }
 .webpgen-ajax-message{
 	margin-left: 10px;
 }
+
+#webpgen-start-btn.loading{
+	opacity: 0.6;
+	padding-left: 30px;
+	background-position: 5px center !important;
+	background-repeat: no-repeat !important;
+	background-image: url(../img/spinner.gif) !important;
+}
+
 
 @media (min-width: 961px) {
 	.webpgen-sidebar{

@@ -1,0 +1,169 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WebP Generator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-14 02:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.0; wp-5.6\n"
+"X-Domain: webpgen"
+
+#: includes/Admin/Settings_Page.php:69
+#, php-format
+msgid "%d Featured Images Approximately."
+msgstr ""
+
+#: webp-generator.php:38
+msgid ""
+"<strong>WebP Generator</strong> plugin was not installed properly. Please "
+"run <code>composer install</code> in webp-generator plugin folder to "
+"complete plugin setup."
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:111
+msgid ""
+"And for media/attachment post type, this field will be diplayed only if the "
+"media is used as featured_image with any post, page or custom post type."
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:93
+msgid "Crop"
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:83
+msgid "Done !!"
+msgstr ""
+
+#: includes/Image_To_Webp.php:44
+msgid "File not exists"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:110
+msgid ""
+"For post, page & custom post types, this field will display information for "
+"featured_image."
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:129
+msgid "Generate Again ?"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:64 includes/Admin/Settings_Page.php:126
+msgid "Generate Now"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:57
+msgid "Generate Webp Files For Featured Images"
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:43 includes/Admin/Ajax_Handlers.php:60
+#: includes/Admin/Settings_Page.php:128
+msgid "Generating..."
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:92
+msgid "Height"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://shazzad.me"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:79
+msgid "Logs"
+msgstr ""
+
+#. Description of the plugin
+msgid "Media image to WebP Generator"
+msgstr ""
+
+#: includes/Webp_Generator.php:65
+msgid "Process completed"
+msgstr ""
+
+#: includes/Webp_Generator.php:62
+msgid "Process has not started"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:86
+msgid "Registered Image Sizes"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:108
+msgid "REST API field"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:109
+msgid ""
+"Rest Api will display webp files data as <code>webp_media_details</code> "
+"field."
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:127
+msgid "Scheduling..."
+msgstr ""
+
+#: includes/Admin/Main.php:45
+msgid "Settings"
+msgstr ""
+
+#. Author of the plugin
+msgid "Shazzad Hossain Khan"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:90
+msgid "Size"
+msgstr ""
+
+#: includes/Image_To_Webp.php:49
+msgid "Unknown file extension"
+msgstr ""
+
+#: includes/Webp_Generator.php:71
+msgid "Upload dir error"
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:82
+msgid "Webp File Generation Completed"
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:97
+msgid "Webp File Generation Ongoing.."
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:42
+msgid "Webp File Generation Resuming.."
+msgstr ""
+
+#: includes/Admin/Ajax_Handlers.php:59
+msgid "Webp File Generation Started"
+msgstr ""
+
+#. Name of the plugin
+msgid "WebP Generator"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:34 includes/Admin/Settings_Page.php:35
+#: includes/Admin/Settings_Page.php:55
+msgid "Webp Generator"
+msgstr ""
+
+#: includes/Admin/Settings_Page.php:91
+msgid "Width"
+msgstr ""
+
+#: includes/Webp_Generator.php:141
+msgid ""
+"Your can't use this tool because your server doesn't support image "
+"conversion which means that WordPress can't convert new image. Please ask "
+"your host to install the Imagick or GD PHP extensions."
+msgstr ""

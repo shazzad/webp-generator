@@ -20,64 +20,52 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Image_To_Webp {
 
-	public $source;
+	public $extension;
 
-	public $source_extension;
+	public $destination = '';
 
-	const ALLOWED_EXTS = [
+	public $generated = false;
+
+	const ALLOWED_EXTS = array(
 		'jpg',
 		'jpeg',
 		'gif',
 		'png',
-		'bmp'
-	];
+		'bmp',
+	);
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string $source Source file absolute path.
 	 */
-	public function __construct( $source ) {
+	public function __construct( $source, $force = true ) {
 		if ( ! file_exists( $source ) ) {
 			throw new Exception( __( 'File not exists', 'webpgen' ) );
 		}
 
-		$this->source_extension = pathinfo( $source, PATHINFO_EXTENSION );
-		if ( ! in_array( $this->source_extension, static::ALLOWED_EXTS, true ) ) {
-			throw new Exception( __( 'Unknown file source_extension', 'webpgen' ) );
+		$extension = pathinfo( $source, PATHINFO_EXTENSION );
+		if ( ! in_array( $extension, static::ALLOWED_EXTS, true ) ) {
+			throw new Exception( __( 'Unknown file extension', 'webpgen' ) );
 		}
 
-		if ( ! webpgen_is_gd_installed() || ! webpgen_is_gd_support_enabled( 'WebP Support' ) ) {
-            throw new Exception( __( 'Missing GD Libary / WebP Module. Can not generate webp image.', 'webpgen' ) );
-        }
-
-		$filename = pathinfo( $source, PATHINFO_FILENAME );
-
-		$this->source = $source;
-		$this->destination = dirname( $source ) . '/' . $filename . '.webp';
-	}
-
-	public function webp_exists() {
-		return file_exists( $this->destination );
-	}
-
-	public function generate() {
-		if ($this->source_extension == 'jpeg' || $this->source_extension == 'jpg') {
-			$image = imagecreatefromjpeg( $this->source );
-		} elseif ($this->source_extension == 'gif') {
-			$image = imagecreatefromgif( $this->source );
-			imagepalettetotruecolor($image);
-			imagealphablending($image, true);
-			imagesavealpha($image, true);
-		} elseif ($this->source_extension == 'png') {
-			$image = imagecreatefrompng( $this->source );
-			imagepalettetotruecolor($image);
-			imagealphablending($image, true);
-			imagesavealpha($image, true);
-		} elseif ($this->source_extension == 'bmp') {
-			$image = imagecreatefrombmp( $this->source );
+		$editor = wp_get_image_editor( $source );
+		if ( is_wp_error( $editor ) ) {
+			throw new Exception( $editor->get_error_message() );
 		}
 
-		return imagewebp( $image, $this->destination, WEBPGEN_QUALITY );
+		$this->destination = dirname( $source ) . '/' . pathinfo( $source, PATHINFO_FILENAME ) . '.webp';
+		$this->exists      = file_exists( $this->destination );
+
+		if ( $force || ! $this->exists ) {
+
+			$saved = $editor->save( $this->destination, 'image/webp' );
+
+			if ( is_wp_error( $saved ) ) {
+				throw new Exception( $saved->get_error_message() );
+			} else {
+				$this->generated = true;
+			}
+		}
 	}
 }

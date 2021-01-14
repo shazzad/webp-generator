@@ -3,7 +3,7 @@
  * Plugin Name: WebP Generator
  * Plugin URI: https://shazzad.me
  * Description: Media image to WebP Generator
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Shazzad Hossain Khan
  * Author URI: https://shazzad.me
  * Requires at least: 5.2
@@ -40,7 +40,7 @@ function webpgen_notice_missing_composer_file() {
 	<?php
 }
 
-if (! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	add_action( 'admin_notices', 'webpgen_notice_missing_composer_file' );
 	return;
 }

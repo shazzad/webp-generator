@@ -26,6 +26,14 @@ class Automation {
 		add_action( 'added_post_meta', array( $this, 'updated_postmeta' ), 10, 4 );
 		add_action( 'webpgen_generate_media_webp', array( $this, 'generate_media_webp' ), 10 );
 		add_action( 'webpgen_schedule_media_webp_generation', array( $this, 'schedule_media_webp_generation' ), 10 );
+		add_action( 'delete_attachment', array( $this, 'delete_webp_files' ), 10 );
+	}
+
+	public function delete_webp_files( $media_id ) {
+		if ( wp_attachment_is_image( $media_id ) ) {
+			$media_to_webp = new Media_To_Webp( $media_id );
+			$media_to_webp->delete();
+		}
 	}
 
 	/**
@@ -45,12 +53,12 @@ class Automation {
 			$media_to_webp = new Media_To_Webp( $media_id );
 			$media_to_webp->generate( true );
 
-			webpgen_log( 
-				'WebP Files Generated For {{media_id}}', 
-				[
+			webpgen_log(
+				'WebP Files Generated For {{media_id}}',
+				array(
 					'media_id' => $media_id,
-					'logs' => $media_to_webp->get_logs()
-				]
+					'logs'     => $media_to_webp->get_logs(),
+				)
 			);
 		}
 	}
@@ -62,10 +70,10 @@ class Automation {
 		$media_id = 0;
 
 		// When a feature image is assigned for a post, image_id would be in the meta_value.
-		if ( $meta_key === '_thumbnail_id' && (int) $meta_value > 0  ) {
+		if ( $meta_key === '_thumbnail_id' && (int) $meta_value > 0 ) {
 			$media_id = (int) $meta_value;
 
-		// When a image metadata is updated.
+			// When a image metadata is updated.
 		} elseif ( $meta_key === '_wp_attachment_metadata' && webpgen_is_media_featured( $object_id ) ) {
 			$media_id = (int) $object_id;
 		}
@@ -75,10 +83,20 @@ class Automation {
 			wp_cache_set( $media_id, true, 'webpgen_generated' );
 
 			if ( webpgen_is_cron_disabled() ) {
-				webpgen_log( 'Generating WebP For {{media_id}}', [ 'media_id' => $media_id ] );
+				webpgen_log(
+					'Generating WebP For {{media_id}}',
+					array(
+						'media_id' => $media_id,
+					)
+				);
 				$this->generate_media_webp( $media_id );
 			} else {
-				webpgen_log( 'Scheduling Generator For {{media_id}}', [ 'media_id' => $media_id ] );
+				webpgen_log(
+					'Scheduling Generator For {{media_id}}',
+					array(
+						'media_id' => $media_id,
+					)
+				);
 				$this->schedule_media_webp_generation( $media_id );
 			}
 		}

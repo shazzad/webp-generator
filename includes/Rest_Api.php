@@ -21,14 +21,14 @@ class Rest_Api {
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 	}
 
-	
+
 	/**
 	 * Schedule a rewrite rules regeneration after listing page updates.
 	 *
 	 * @param  string $post_ID Current post id.
 	 */
 	public function rest_api_init() {
-		$types = [];
+		$types = array();
 		foreach ( get_post_types() as $type ) {
 			if ( post_type_supports( $type, 'thumbnail' ) ) {
 				$types[] = $type;
@@ -39,21 +39,21 @@ class Rest_Api {
 			return;
 		}
 
-		register_rest_field( 
-			$types, 
-			'webp_media_details', 
+		register_rest_field(
+			$types,
+			'webp_media_details',
 			array(
-				'get_callback'    => [ $this, 'get_post_webp_media_details' ],
-				'schema'          => null,
+				'get_callback' => array( $this, 'get_post_webp_media_details' ),
+				'schema'       => null,
 			)
 		);
 
-		register_rest_field( 
-			'attachment', 
-			'webp_media_details', 
+		register_rest_field(
+			'attachment',
+			'webp_media_details',
 			array(
-				'get_callback'    => [ $this, 'get_webp_media_details' ],
-				'schema'          => null,
+				'get_callback' => array( $this, 'get_webp_media_details' ),
+				'schema'       => null,
 			)
 		);
 	}
@@ -64,7 +64,7 @@ class Rest_Api {
 			$media_id = get_post_meta( $object['id'], '_thumbnail_id', true );
 			return $this->get_webp_media_details_raw( $media_id );
 		} else {
-			$webp_media_details = [ 'sizes' => [] ];
+			$webp_media_details = array( 'sizes' => array() );
 		}
 
 		return $webp_media_details;
@@ -75,18 +75,18 @@ class Rest_Api {
 			return $this->get_webp_media_details_raw( $object['id'] );
 		}
 
-		return [ 'sizes' => [] ];
+		return array( 'sizes' => array() );
 	}
 
 	public function get_webp_media_details_raw( $id ) {
 
-		$webp_media_details = [ 'sizes' => [] ];
+		$webp_media_details = array( 'sizes' => array() );
 
 		$metadata = wp_get_attachment_metadata( $id );
-		$uploads = wp_get_upload_dir();
+		$uploads  = wp_get_upload_dir();
 
 		if ( $uploads['error'] === false ) {
-			$mainfile = $metadata['file'];
+			$mainfile  = $metadata['file'];
 			$extension = pathinfo( $mainfile, PATHINFO_EXTENSION );
 
 			if ( 0 !== strpos( $mainfile, $uploads['baseurl'] ) ) {
@@ -96,20 +96,20 @@ class Rest_Api {
 			$dirname = dirname( $mainfile );
 
 			foreach ( $metadata['sizes'] as $key => $size ) {
-				$webp_media_details['sizes'][ $key ] = [
-					'width' => $size['width'],
-					'height' => $size['height'],
-					'mime_type' => 'image/webp',
-					'source_url' => $dirname . '/' . str_replace( '.' . $extension, '.webp', $size['file'] )
-				];
+				$webp_media_details['sizes'][ $key ] = array(
+					'width'      => $size['width'],
+					'height'     => $size['height'],
+					'mime_type'  => 'image/webp',
+					'source_url' => $dirname . '/' . str_replace( '.' . $extension, '.webp', $size['file'] ),
+				);
 			}
 
-			$webp_media_details['sizes'][ 'full' ] = [
-				'width' => $metadata['width'],
-				'height' => $metadata['height'],
-				'mime_type' => 'image/webp',
-				'source_url' => str_replace( '.' . $extension, '.webp', $mainfile )
-			];
+			$webp_media_details['sizes']['full'] = array(
+				'width'      => $metadata['width'],
+				'height'     => $metadata['height'],
+				'mime_type'  => 'image/webp',
+				'source_url' => str_replace( '.' . $extension, '.webp', $mainfile ),
+			);
 		}
 
 		return $webp_media_details;

@@ -1,11 +1,11 @@
 <?php
-namespace WebpGen\Admin;
-
 /**
  * Admin main class.
  *
  * @package WebpGen
  */
+
+namespace WebpGen\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class WebpGen_Admin_Main
  */
 class Main {
+
 	/**
 	 * Constructor
 	 */
@@ -29,7 +30,7 @@ class Main {
 	 * Register admin assets.
 	 */
 	public function register_admin_scripts() {
-		wp_register_style( 'webpgen-admin', WEBPGEN_URL . 'assets/css/admin.css', array( ) );
+		wp_register_style( 'webpgen-admin', WEBPGEN_URL . 'assets/css/admin.css', array() );
 		wp_register_script( 'webpgen-admin', WEBPGEN_URL . 'assets/js/admin.js', array( 'jquery' ) );
 	}
 
@@ -37,7 +38,7 @@ class Main {
 	 * Adds plugin action links.
 	 */
 	public function plugin_action_links( $links ) {
-		$new_links = array();
+		$new_links             = array();
 		$new_links['settings'] = sprintf(
 			'<a href="%s">%s</a>',
 			admin_url( 'options-general.php?page=webpgen-settings' ),
